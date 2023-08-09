@@ -1,17 +1,39 @@
-import React, { useContext } from 'react'
-import {CardOption} from '../Components/Card'
-import { HomeLayout } from '../Layout/HomeLayout'
-import '../Styles/Home.css'
+import { LinearProgress } from '@mui/material';
+import { Box } from '@mui/system';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { startCheckDataUser } from '../../store/auth/thunks';
+import { HomeLayout } from '../Layout/HomeLayout';
+import '../Styles/Home.css';
+import { InactiveView } from '../Views/InactiveView';
+import { OptionsView } from '../Views/OptionsView';
 
 export const Home = () => {
-  
-  return (
-    <HomeLayout>
-      <div className="cards">
-          <CardOption name={"RECURSOS HUMANOS"} navigate={"rrhh"} color={"green"}/>
-          <CardOption name={"GESTION"} navigate={"alumnos"} color={"blue"}/>
-          <CardOption name={"PROMOTORES"} navigate={"homepromotores"} color={"coral"}/>
-      </div>
-    </HomeLayout>
-  )
-}
+    const dispatch = useDispatch();
+    const { dataUser } = useSelector(state => state.auth);
+    
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        dispatch(startCheckDataUser())
+            .then(() => {
+                setIsLoading(false);
+            });
+    }, []);
+
+    return (
+        <HomeLayout>
+            {isLoading ? (
+              <>
+                  <Box sx={{ width: '100%', marginTop: '20px' }}>
+                    <LinearProgress />
+                  </Box>
+              </>
+            ) : dataUser.Activo ? (
+                <OptionsView />
+            ) : (
+                <InactiveView />
+            )}
+        </HomeLayout>
+    );
+};

@@ -1,5 +1,6 @@
+import { doc, setDoc } from '@firebase/firestore';
 import { GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword, getAuth} from 'firebase/auth';
-import { auth } from "./Firebase";
+import { auth, db } from "./Firebase";
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -7,6 +8,8 @@ export const  singInWhitGoogle = async()=>{
     try{
         const result = await signInWithPopup (auth, googleProvider) // ESTA FUNCIONA ES PARA INGRESAR CON GOOGLE - es lo mismo para todos
         const {displayName, email, photoURL, uid} = result.user;
+        const docRef=doc(db,"DataUsers",uid);
+        setDoc(docRef,{Activo: false});
         return{
             ok: true,
             //INFORMACION DEL USUARIO
@@ -15,7 +18,6 @@ export const  singInWhitGoogle = async()=>{
             photoURL,
             uid,
         }
-
 
     }catch(error){
         console.log(error);
@@ -57,6 +59,8 @@ export const RegisterWhitEmail=async({email,password,displayName})=>{
         const {uid, photoURL}=resp.user
         //ACTUALIZAR LA FOTO Y EL NOMBRE DEL USUARIO
         await updateProfile(auth.currentUser,{displayName});
+        const docRef=doc(db,"DataUsers",uid);
+        setDoc(docRef,{Activo: false});
 
         return{
             ok: true,

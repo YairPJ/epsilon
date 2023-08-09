@@ -1,6 +1,8 @@
-import { checkingCredentials, login, logOut } from "./authSlice"
+import { checkingCredentials, dataUser, login, logOut } from "./authSlice"
 import { singInWhitGoogle,RegisterWhitEmail,singWhitEmail, LogOutFirebase } from "./Firebase/Providers";
 import {cleanSolicitud} from '../erpApp/Solicitud';
+import { doc, getDoc} from "firebase/firestore"; 
+import { db } from "./Firebase/Firebase";
 
 
 export const checkingAuth=(email, password)=>{
@@ -47,6 +49,16 @@ export const startCreateUserWhitEmailAndPassword=({nombre,apellidop,apellidom,pa
         if(!ok)return dispatch(logOut({errorMesagge}));
 
         dispatch(login({uid, displayName, email, photoURL}));
+    }
+}
+
+export const startCheckDataUser=()=>{
+    return async(dispatch, getState)=>{
+        const {uid} = getState().auth;
+        const docRef = doc(db, "DataUsers", uid);
+        const data = await getDoc(docRef);
+        dispatch(dataUser(data.data()));
+        
     }
 }
 

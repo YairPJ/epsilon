@@ -1,6 +1,5 @@
 import React from 'react';
 import '../Styles/HomeRRHH.css';
-import { Navbar } from '../../../UI/Components/Navar';
 import { Options } from '../Components/Options';
 
 export const NavarRRHH = () => {

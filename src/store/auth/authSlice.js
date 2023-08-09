@@ -8,6 +8,7 @@ email: null,
 name: null,
 photoUrl: null,
 errorMesaje: null,
+dataUser:[],
 },
 reducers: {
     login :(state, {payload})=>{
@@ -26,6 +27,10 @@ reducers: {
         state.name = null;
         state.photoUrl = null;
         state.errorMesaje = payload?.errorMesagge;
+        state.dataUser=[];
+    },
+    dataUser:(state,action)=>{
+        state.dataUser=action.payload;
     },
     checkingCredentials:(state)=>{
         state.status = 'checking';
@@ -33,4 +38,4 @@ reducers: {
 }
 });
 // Action creators are generated for each case reducer function
-export const { login, logOut, checkingCredentials } = authSlice.actions;
+export const { login, logOut, checkingCredentials, dataUser} = authSlice.actions;

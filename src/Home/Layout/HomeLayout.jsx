@@ -3,6 +3,7 @@ import React from 'react'
 import { Navbar } from '../../UI/Components/Navar'
 
 export const HomeLayout = ({children}) => {
+  
   return (
     <Box >
         <Navbar data={"INICIO"}/>

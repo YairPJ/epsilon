@@ -1,7 +1,8 @@
 import { collection, doc, setDoc, deleteDoc } from "firebase/firestore";
 import { loadNotes } from "../../helpers/loadSolicitudes";
 import { db } from "../auth/Firebase/Firebase";
-import { addSolicitud, creatingNewSolicitud, deleteSolicitud, setSaving, showMessage } from "./Solicitud";
+import { addSolicitud, creatingNewSolicitud, deleteSolicitud, setSaving } from "./Solicitud";
+import { showMessage } from "../HomeReducer/Home";
 
 
 export const startNewSolicitud = (newSolicitud) => {

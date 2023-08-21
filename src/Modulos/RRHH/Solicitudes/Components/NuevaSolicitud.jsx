@@ -47,6 +47,7 @@ export const NuevaSolicitud = ({ onClose}) => {
 
   const dispatch=useDispatch();
   const {isSaving, active}=useSelector(state=>state.solicitud);
+  
   const {nombre, apellidoMaterno, apellidoPaterno, genero, EstadoDeNacimiento, Telefono, 
     CorreoElectronico,EstadoDeVivienda, Ciudad, Calle, Numero, Interior, CodigoPostal,
     Primaria,Secundaria,Preparatoria,Universidad,Posgrado,Carrera,NombrePosgrado, formState,

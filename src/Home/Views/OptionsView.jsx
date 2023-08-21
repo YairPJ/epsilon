@@ -4,12 +4,12 @@ import { useSelector } from 'react-redux'
 import {CardOption} from '../Components/Card'
 
 export const OptionsView = () => {
-    const {dataUser} = useSelector(state=>state.auth);
+    const {derechos} = useSelector(state=>state.auth);
   return (
     <>
     <div className="cards">
-      {dataUser.RecursosHumanos?(<CardOption name={"RECURSOS HUMANOS"} navigate={"rrhh"} color={"green"}/>):(null)}
-      {dataUser.Gestion?(<CardOption name={"GESTION"} navigate={"gestion"} color={"blue"}/>):(null)}
+      {derechos.RecursosHumanos?(<CardOption name={"RECURSOS HUMANOS"} navigate={"rrhh"} color={"green"}/>):(null)}
+      {derechos.Gestion?(<CardOption name={"GESTION"} navigate={"gestion"} color={"blue"}/>):(null)}
       </div>
 
     </>

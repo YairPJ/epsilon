@@ -1,83 +1,18 @@
 
 import { MenuAppBar } from '../Components/AppBar'
 import { Box } from '@mui/system'
-import React,{useEffect} from 'react'
+import React from 'react'
 import { Navbar } from '../../../UI/Components/Navar'
 import { useDispatch, useSelector } from 'react-redux'
 
 export const GestionLayout = ({children}) => {
 
-  const dispatch = useDispatch();
-  const { message } = useSelector(state => state.gestion);
 
   const appBarOptions={
     Inicio: '/Home/gestion',
+    Usuarios: '/Home/gestion/usuarios',
+    Alta: '/Home/gestion/altanuevousuario'
   };
-
-  let timer;
-
-  useEffect(() => {
-    if(message.length>0){
-      switch (message[0]) {
-        case "success":
-          toast.success(message[1], {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            });
-            break;
-        case "error":
-          toast.error(message[1], {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            });
-            break;
-        case "info":
-          toast.info(message[1], {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            });
-          break;
-      
-        default:
-          toast(message[1], {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            });
-          break;
-      }
-
-      const timer = setTimeout(() => {
-        dispatch(clearMessage());
-      }, 1000);
-    }
-    return () => clearTimeout(timer);
-    
-
-  }, [message])
 
   return (
     <Box>

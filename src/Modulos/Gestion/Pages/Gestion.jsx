@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { startLoadingData } from '../../../store/Gestion/Thunks'
 import { GestionLayout } from '../Layout/GestionLayout'
 import { DownloadingView } from '../Views/DownloadingView'
+import { GestionHomeView } from '../Views/GestionHomeView'
 
 export const Gestion = () => {
 const dispatch = useDispatch();
@@ -17,7 +18,7 @@ return (
   <GestionLayout>
       {(data.length>0)
       ?(
-        <h1>{data[0].Nombre}</h1>
+        <GestionHomeView/>
       ):(
         <DownloadingView/>
       )

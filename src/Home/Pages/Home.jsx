@@ -2,7 +2,7 @@ import { LinearProgress } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { startCheckDataUser } from '../../store/auth/thunks';
+import { startAsignarDerechos, startCheckDataUser } from '../../store/auth/thunks';
 import { HomeLayout } from '../Layout/HomeLayout';
 import '../Styles/Home.css';
 import { InactiveView } from '../Views/InactiveView';
@@ -18,6 +18,7 @@ export const Home = () => {
         dispatch(startCheckDataUser())
             .then(() => {
                 setIsLoading(false);
+                dispatch(startAsignarDerechos());
             });
     }, []);
 

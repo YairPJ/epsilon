@@ -5,9 +5,6 @@ import { SideBar } from '../Components/SideBar';
 import { startLoadingSolicitudes } from '../../../../store/erpApp/Thunks';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { clearMessage } from '../../../../store/erpApp/Solicitud';
 
 
 
@@ -15,7 +12,6 @@ import { clearMessage } from '../../../../store/erpApp/Solicitud';
 export const SolicitudesLayout = ({ children }) => {
   const dispatch = useDispatch();
   const { solicitudes } = useSelector(state => state.solicitud);
-  const {mesaggeSaved} = useSelector(state => state.solicitud);
 
 
   const drawerWidth = 400;

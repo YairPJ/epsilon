@@ -38,12 +38,6 @@ reducers: {
         state.solicitudes= [];
         state.active='';
     },
-    showMessage:(state, action)=>{
-        state.mesaggeSaved=action.payload;
-    },
-    clearMessage: (state) => {
-        state.mesaggeSaved = [];
-      },
 
 
 
@@ -52,4 +46,4 @@ reducers: {
 });
 // Action creators are generated for each case reducer function
 export const { addSolicitud, setActiveSolicitud, setSaving, deleteSolicitud, 
-    updateSolicitud,creatingNewSolicitud, cleanSolicitud,showMessage,clearMessage} = solicitudSlice.actions;
+    updateSolicitud,creatingNewSolicitud, cleanSolicitud} = solicitudSlice.actions;

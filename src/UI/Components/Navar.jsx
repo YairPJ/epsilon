@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -15,9 +15,11 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { Navigate, useNavigate } from 'react-router';
 import logoProvi from '../../../public/images/logoprovi.png'
-import { useDispatch } from 'react-redux';
 import { startLogOutWhitFirebase } from '../../store/auth/thunks';
-import { useSelector } from 'react-redux'
+import { clearMessage } from '../../store/HomeReducer/Home';
+import { useDispatch, useSelector } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -63,6 +65,72 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export const Navbar = (props) => {
 
   const dispatch = useDispatch();
+  const { message } = useSelector(state => state.home);
+  let timer;
+
+  useEffect(() => {
+    if(message.length>0){
+      switch (message[0]) {
+        case "success":
+          toast.success(message[1], {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
+            break;
+        case "error":
+          toast.error(message[1], {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
+            break;
+        case "info":
+          toast.info(message[1], {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
+          break;
+      
+        default:
+          toast(message[1], {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
+          break;
+      }
+
+      const timer = setTimeout(() => {
+        dispatch(clearMessage());
+      }, 1000);
+    }
+    return () => clearTimeout(timer);
+    
+
+  }, [message])
+
   const Navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -109,7 +177,7 @@ export const Navbar = (props) => {
     >
       
       <MenuItem onClick={()=>{Navigate("/Home/perfil")}}>Mi Perfil</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Ajustes</MenuItem>
+      <MenuItem onClick={()=>toast.success("jf")}>Ajustes</MenuItem>
       <MenuItem onClick={onLogOut}>Cerrar Sesion</MenuItem>
     </Menu>
   );
@@ -170,6 +238,8 @@ export const Navbar = (props) => {
 
 
   return (
+    <>
+        <ToastContainer/>
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', backgroundColor: 'white', zIndex: 100 }}>
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -240,5 +310,6 @@ export const Navbar = (props) => {
       {renderMenu}
     </Box>
     </div>
+    </>
   );
 };

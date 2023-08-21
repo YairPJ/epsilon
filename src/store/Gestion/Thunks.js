@@ -1,10 +1,63 @@
+
 import { loadInfo } from "../../helpers/loadInfo";
-import { setData } from "./Gestion";
+import { loadInfoCollections } from "../../helpers/loadInfoCollections";
+import { loadInfoDoc } from "../../helpers/loadInfoDoc";
+import { setData, setDataUsuarios, setIsLoading, setUserActiveDerechos } from "./Gestion";
+import { showMessage } from "../HomeReducer/Home";
+import { sendInfo } from "../../helpers/sendInfo";
 
 export const startLoadingData=()=>{
-    return async(dispatch)=>{
-        const data = await loadInfo("/EPSILON SA DE CV/Info/InformacionDeLaEmpresa");
+    return async(dispatch,getState)=>{
+        const {dataUser} = getState().auth;
+        const empresa=dataUser.Empresa;
+        const path = `/${empresa}/Info/InformacionDeLaEmpresa`;
+        const data=await loadInfo(path);
         dispatch(setData(data));
 
     }
 }
+
+export const starLoadingEmpleados=()=>{
+    return async(dispatch,getState)=>{
+        const {dataUser} = getState().auth;
+        const empresa=dataUser.Empresa;
+        const path1="Usuarios";
+        const path2="DataUsuarios"
+        const data = await loadInfoCollections(empresa,path1,path2);
+        dispatch(setDataUsuarios(data));
+    }
+}
+
+export const startLoadingDerechosEmpleado=()=>{
+    return async(dispatch,getState)=>{
+        const {userActive}=getState().gestion;
+        const {dataUser} = getState().auth;
+        const empresa=dataUser.Empresa;
+        const uid=userActive.uid;
+        const path = `/${empresa}/Usuarios/Derechos/${uid}`;
+        const dataDerechos=await loadInfoDoc(path);
+        dispatch(setUserActiveDerechos(dataDerechos));
+    }
+}
+
+export const startUpdateUserInformation=(data, collectionUpdate)=>{
+    return async(dispatch,getState)=>{
+        dispatch(setIsLoading(true));
+        const {dataUser} = getState().auth;
+        const {userActive}=getState().gestion;
+        const empresa=dataUser.Empresa;
+        const uid=userActive.uid;
+        const path=`/${empresa}/Usuarios/${collectionUpdate}/${uid}`;
+        const response = await sendInfo(path,data);
+        if(response){
+            dispatch(setIsLoading(false));
+            dispatch(showMessage(['success',`${collectionUpdate} actualizado correctamente`]))
+        }else{
+            dispatch(showMessage(['error',response]));
+        }
+    }
+}
+
+
+
+

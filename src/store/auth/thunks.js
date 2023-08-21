@@ -1,4 +1,4 @@
-import { checkingCredentials, dataUser, login, logOut } from "./authSlice"
+import { asignarDerechos, checkingCredentials, dataUser, login, logOut } from "./authSlice"
 import { singInWhitGoogle,RegisterWhitEmail,singWhitEmail, LogOutFirebase } from "./Firebase/Providers";
 import {cleanSolicitud} from '../erpApp/Solicitud';
 import { doc, getDoc} from "firebase/firestore"; 
@@ -58,7 +58,16 @@ export const startCheckDataUser=()=>{
         const docRef = doc(db, "DataUsers", uid);
         const data = await getDoc(docRef);
         dispatch(dataUser(data.data()));
-        
+    }
+}
+
+export const startAsignarDerechos=()=>{
+    return async(dispatch, getState)=>{
+        const {dataUser,uid}=getState().auth;
+        const Empresa=dataUser.Empresa;
+        const docRef = doc(db, Empresa, "Usuarios", "Derechos" ,uid);
+        const derechos = await getDoc(docRef);
+        dispatch(asignarDerechos(derechos.data()));
     }
 }
 

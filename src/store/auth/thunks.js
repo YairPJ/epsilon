@@ -3,6 +3,7 @@ import { singInWhitGoogle,RegisterWhitEmail,singWhitEmail, LogOutFirebase } from
 import {cleanSolicitud} from '../erpApp/Solicitud';
 import { doc, getDoc} from "firebase/firestore"; 
 import { db } from "./Firebase/Firebase";
+import { cleanWorkTimeData } from "../WorkTime/WorkTime";
 
 
 export const checkingAuth=(email, password)=>{
@@ -77,5 +78,6 @@ export const startLogOutWhitFirebase=()=>{
 
         dispatch(logOut());
         dispatch(cleanSolicitud());
+        dispatch(cleanWorkTimeData());
     }
 }

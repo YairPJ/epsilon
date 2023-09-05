@@ -1,8 +1,9 @@
 import { collection, doc, setDoc, deleteDoc } from "firebase/firestore";
 import { loadNotes } from "../../helpers/loadSolicitudes";
 import { db } from "../auth/Firebase/Firebase";
-import { addSolicitud, creatingNewSolicitud, deleteSolicitud, setSaving } from "./Solicitud";
+import { addSolicitud, creatingNewSolicitud, deleteSolicitud, setEmpleados, setSaving } from "./Solicitud";
 import { showMessage } from "../HomeReducer/Home";
+import { loadInfoCollections } from "../../helpers/loadInfoCollections";
 
 
 export const startNewSolicitud = (newSolicitud) => {
@@ -44,5 +45,16 @@ export const startDelete=()=>{
         dispatch(deleteSolicitud(solicitud.id));
         dispatch(showMessage(['info','La solicitud ha sido eliminada']))
 
+    }
+}
+
+export const startConsultEmpleados=()=>{
+    return async(dispatch,getState)=>{
+        const{dataUser} = getState().auth;
+        const company=dataUser.Empresa;
+        const path1="Usuarios";
+        const path2="DataUsuarios"
+        const data = await loadInfoCollections(company,path1,path2);
+        dispatch(setEmpleados(data));
     }
 }

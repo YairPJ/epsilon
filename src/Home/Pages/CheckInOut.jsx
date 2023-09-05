@@ -7,14 +7,16 @@ import AccessTimeFilledRoundedIcon from '@mui/icons-material/AccessTimeFilledRou
 import LunchDiningRoundedIcon from '@mui/icons-material/LunchDiningRounded';
 import BedtimeRoundedIcon from '@mui/icons-material/BedtimeRounded';
 import LocalDiningRoundedIcon from '@mui/icons-material/LocalDiningRounded';
-import { startConsultInformation, startSendWorkTime } from '../../store/WorkTime/Thunks';
+import { finishWork, startConsultInformation, startSendWorkTime, startWork } from '../../store/WorkTime/Thunks';
 import { useDispatch, useSelector } from 'react-redux';
+import { CalculateWorkTime } from '../../Hooks/CalculateWorkTime';
 
 export const CheckInOut = () => {
   const dispatch = useDispatch();
   const currentDate = new Date();
   const { start, startLunch, finishLunch, end, workedTime, isLoading } = useSelector(state => state.workTime);
-  const dateData = currentDate.getDate().toLocaleString() + currentDate.getMonth().toLocaleString() + currentDate.getFullYear();
+  const actualMont=currentDate.getMonth()+1;
+  const dateData = currentDate.getDate().toLocaleString() + actualMont.toLocaleString() + currentDate.getFullYear();
 
   const [isLoadingData, setIsLoadingData] = useState(true); // Controla la carga de la información
 
@@ -40,7 +42,7 @@ export const CheckInOut = () => {
     }
   }, [isLoadingData, start, startLunch, finishLunch, end]);
 
-  const dateToday = currentDate.getDate() + "/" + currentDate.getMonth() + "/" + currentDate.getFullYear();
+  const dateToday = currentDate.getDate() + "/" + actualMont + "/" + currentDate.getFullYear();
   const timeNow = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
   const year = currentDate.getFullYear();
 
@@ -53,7 +55,7 @@ export const CheckInOut = () => {
   }
 
   const sendInfo = (event) => {
-    const buttonName = event.target.name; // Obtén el nombre del botón que fue presionado
+    const buttonName = event.target.name;
   
     switch (buttonName) {
       case "clockIn":
@@ -62,6 +64,7 @@ export const CheckInOut = () => {
           Entrada: timeNow,
         };
         dispatch(startSendWorkTime(dataClockIn, dateData));
+        dispatch(startWork(timeNow));
         break;
       case "lunchOut":
         setLunchOut(timeNow);
@@ -82,7 +85,12 @@ export const CheckInOut = () => {
         const dataCheckOut = {
           Salida: timeNow,
         };
+        const workedTime = CalculateWorkTime(start,startLunch,finishLunch,timeNow);
+        const dataFinish={
+          TotalLaborado:  workedTime,
+        }
         dispatch(startSendWorkTime(dataCheckOut, dateData));
+        dispatch(finishWork(dataFinish,dateData,workedTime));
         break;
       default:
         break;
@@ -110,7 +118,18 @@ export const CheckInOut = () => {
               }}
             >
               <Box sx={{textAlign: 'center'}}>
-                <Typography color="white" variant="h5" sx={{backgroundColor: '#EE17D4'}}>TIEMPO DE TRABAJO</Typography>
+      
+                {(start==="")?(
+                  <Typography color="white" variant="h5" sx={{backgroundColor: '#EE17D4'}}>TIEMPO DE TRABAJO</Typography>
+                  ):(
+                    (workedTime==="")?(
+                  <Typography color="white" variant="h5" sx={{backgroundColor: '#01A12F'}}>JORNADA LABORAL INICIADA</Typography>
+                    ):(
+                  <Typography color="white" variant="h5" sx={{backgroundColor: '#FFAA00'}}>JORNADA LABORAL FINALIZADA</Typography>
+                    )
+                  )
+                }  
+                  
                   <Box sx={{width: '100%', marginTop:'40px'}}>
                   {(isLoading)?<CircularProgress color="secondary"/>:(
                     <>
@@ -124,12 +143,12 @@ export const CheckInOut = () => {
                           </Button>
                       </Grid>
                       <Grid item>
-                      <Button variant="outlined" size="large" onClick={sendInfo} name="lunchOut" startIcon={<LocalDiningRoundedIcon/>} disabled={(lunchOut==="")?false:true}>
+                      <Button variant="outlined" size="large" onClick={sendInfo} name="lunchOut" startIcon={<LunchDiningRoundedIcon/>} disabled={(lunchOut==="")?false:true}>
                       {lunchOut === "" ? "Salida a Comer" : lunchOut}
                       </Button>
                       </Grid>
                       <Grid item>
-                      <Button variant="outlined" size="large" onClick={sendInfo} name="lunchIn" startIcon={<LunchDiningRoundedIcon/>} disabled={(lunchIn==="")?false:true}>
+                      <Button variant="outlined" size="large" onClick={sendInfo} name="lunchIn" startIcon={<LocalDiningRoundedIcon/>} disabled={(lunchIn==="")?false:true}>
                       {lunchIn === "" ? "Entrada de Comer" : lunchIn}
                           </Button>
                       </Grid>
@@ -142,6 +161,12 @@ export const CheckInOut = () => {
                       </>
                        )}
                   </Box>
+                  {(workedTime!=="")?(
+                  <Box sx={{marginTop: '50px'}}>
+                    <Typography>TIEMPO LABORADO: {workedTime}</Typography>
+                  </Box>
+                  ):(null)
+                  } 
               </Box>
             </Box>
           </Box>

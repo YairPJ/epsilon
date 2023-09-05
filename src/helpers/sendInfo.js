@@ -6,6 +6,6 @@ export const sendInfo = async (path, data) => {
     await setDoc(doc(db, path), data, { merge: true });
     return true;
   } catch (error) {
-    return error;
+    return false;
   }
 };

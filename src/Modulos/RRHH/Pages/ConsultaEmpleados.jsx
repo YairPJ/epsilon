@@ -1,49 +1,66 @@
-import React from 'react'
-import '../Styles/ConsultaEmpleados.css'
+import React, { useEffect, useState } from 'react';
+import '../Styles/ConsultaEmpleados.css';
 import { DataGrid } from '@mui/x-data-grid';
 import { RRHHLayout } from '../Layout/RRHHLayout';
+import { Box } from '@mui/system';
+import { useDispatch, useSelector } from 'react-redux';
+import { startConsultEmpleados } from '../../../store/erpApp/Thunks';
+import { LinearProgress } from '@mui/material';
 
 const columns = [
-    { field: 'id', headerName: 'No. Empleado', width: 130 },
-    { field: 'firstName', headerName: 'Nombre(s)', width: 130 },
-    { field: 'lastName', headerName: 'Apellido Paterno', width: 130 },
-    { field: 'lastName', headerName: 'Apellido Materno', width: 130 },
-    {field: 'age', headerName: 'Edad', type: 'number', width: 90,},
-    {field: 'dpto', headerName: 'Departamento', width: 200,},
-    {field: 'puesto', headerName: 'Puesto', width: 200,},
-
-  ];
-  
-  const rows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35, dpto: 'RRHH', puesto: 'RECLUTADOR' },
-
-  ];
-
+  { field: 'name', headerName: 'Nombre(s)', width: 200 },
+  { field: 'lastName', headerName: 'Apellido Paterno', width: 200 },
+  { field: 'lastLastName', headerName: 'Apellido Materno', width: 200 },
+  { field: 'phoneNumber', headerName: 'Telefono', type: 'number', width: 150 },
+  { field: 'email', headerName: 'Correo Electronico', type: 'email', width: 200 },
+  { field: 'dpto', headerName: 'Departamento', width: 200 },
+  { field: 'puesto', headerName: 'Puesto', width: 200 },
+  { field: 'fechaDeAlta', headerName: 'Fecha De Alta', width: 200 },
+];
 
 export const ConsultaEmpleados = () => {
+  const dispatch = useDispatch();
+  const { empleados } = useSelector((state) => state.solicitud);
+  const [dataEmpleados, setdataEmpleados] = useState([]);
+  const [isLoading, setisLoading] = useState(true);
+
+  useEffect(() => {
+    dispatch(startConsultEmpleados()).then(() => {
+      setdataEmpleados(empleados);
+      setisLoading(false);
+    });
+  }, [dispatch, empleados]); // Agrega [dispatch, empleados] como dependencias del efecto
+
+  const rows = dataEmpleados.map((empleado) => ({
+    id: empleado.id,
+    name: empleado.nombre,
+    lastName: empleado.apellidoPaterno,
+    lastLastName: empleado.apellidoMaterno,
+    phoneNumber: empleado.Telefono,
+    email: empleado.CorreoElectronico,
+    dpto: empleado.Departamento,
+    puesto: empleado.Puesto,
+    fechaDeAlta: empleado.FechaDeAlta,
+  }));
+
   return (
-      <>
-      <RRHHLayout>
-      <div className="titlePage">CONSULTA DE EMPLEADOS</div>
-      <div className="body">
-    
-    <div className="table-data">
-      <div style={{ height: 400, width: '80%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
-          },
-        }}
-        pageSizeOptions={[5, 10]}
-        checkboxSelection
-      />
-    </div>
-    </div>
-      </div>
-      </RRHHLayout>
-      </>
-  )
-}
+    <RRHHLayout>
+      {isLoading ? (
+        <Box sx={{ marginTop: '40px' }}>
+          <LinearProgress />
+        </Box>
+      ) : (
+        <div style={{ height: 400, width: '100%', marginTop: '50px' }}>
+          {dataEmpleados.length > 0 ? (
+            <DataGrid
+              rows={rows}
+              columns={columns}
+            />
+          ) : (
+            <p>No hay datos disponibles.</p>
+          )}
+        </div>
+      )}
+    </RRHHLayout>
+  );
+};

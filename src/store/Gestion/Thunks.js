@@ -2,7 +2,7 @@
 import { loadInfo } from "../../helpers/loadInfo";
 import { loadInfoCollections } from "../../helpers/loadInfoCollections";
 import { loadInfoDoc } from "../../helpers/loadInfoDoc";
-import { setData, setDataUsuarios, setIsLoading, setUserActiveDerechos } from "./Gestion";
+import { setData, setDataUsuarios, setIsLoading, setUserActive, setUserActiveDerechos } from "./Gestion";
 import { showMessage } from "../HomeReducer/Home";
 import { sendInfo } from "../../helpers/sendInfo";
 
@@ -55,6 +55,12 @@ export const startUpdateUserInformation=(data, collectionUpdate)=>{
         }else{
             dispatch(showMessage(['error',response]));
         }
+    }
+}
+
+export const cleanUserActive=()=>{
+    return async(dispatch)=>{
+        setUserActive("");
     }
 }
 

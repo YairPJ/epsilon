@@ -8,8 +8,6 @@ export const  singInWhitGoogle = async()=>{
     try{
         const result = await signInWithPopup (auth, googleProvider) // ESTA FUNCIONA ES PARA INGRESAR CON GOOGLE - es lo mismo para todos
         const {displayName, email, photoURL, uid} = result.user;
-        const docRef=doc(db,"DataUsers",uid);
-        setDoc(docRef,{Activo: false});
         return{
             ok: true,
             //INFORMACION DEL USUARIO
@@ -53,29 +51,19 @@ export const singWhitEmail=async({email,password})=>{
 }
 
 export const RegisterWhitEmail=async({email,password,displayName})=>{
-
+    const email2=email
     try{
-        const resp = await createUserWithEmailAndPassword(auth,email,password)
-        const {uid, photoURL}=resp.user
+        const resp = await createUserWithEmailAndPassword(auth,email2,password);
+        const {uid, photoURL, email}=resp.user
         //ACTUALIZAR LA FOTO Y EL NOMBRE DEL USUARIO
-        await updateProfile(auth.currentUser,{displayName});
+        await updateProfile(auth.currentUser,{displayName}); 
         const docRef=doc(db,"DataUsers",uid);
-        setDoc(docRef,{Activo: false});
-
-        return{
-            ok: true,
-            uid,
-            photoURL,
-            email,
-            name,
-
-        }
+        setDoc(docRef,{Activo: false, Email: email});
     //VALIDACIONES DE LOS ERRORES DE FIREBASE
     }catch(error){
 
        const errorMesagge = error.message;
-        
-       return{errorMesagge}
+       console.log(errorMesagge);
     }
 
 }

@@ -1,7 +1,7 @@
 
 import { downloadInformationFromFirebase } from "../../helpers/downloadInformationFromFirebase";
 import { sendInfo } from "../../helpers/sendInfo";
-import { entradaComida, finalizarJornada, inicioDeJornada, salidaComer, setIsLoading } from "./WorkTime";
+import { entradaComida, finalizarJornada, inicioDeJornada, salidaComer, setIsLoading, tiempoDeTrabajo } from "./WorkTime";
 import { showMessage } from "../HomeReducer/Home";
 
 
@@ -24,6 +24,9 @@ export const startConsultInformation=(dateData)=>{
         }
         if(data[name].Salida){
             dispatch(finalizarJornada(data[name].Salida));
+        }
+        if(data[name].TotalLaborado){
+            dispatch(tiempoDeTrabajo(data[name].TotalLaborado));
         }
         dispatch(setIsLoading(false));
     }else{
@@ -50,3 +53,29 @@ export const startSendWorkTime=(data, dateData)=>{
     }    
 
 }
+
+export const finishWork=(data, dateData, time)=>{
+    return async(dispatch, getState)=>{
+        dispatch(setIsLoading(true));
+        const {name, dataUser} = getState().auth;
+        const company = dataUser.Empresa;
+        const path=`/${company}/TiempoDeTrabajo/${dateData}/${name}`;
+        const resp = sendInfo(path, data);
+        if(resp){
+            dispatch(setIsLoading(false));
+            dispatch(showMessage(['success','La Jornada laboral fue finalizada. Puede retirarse :)']))
+            dispatch(tiempoDeTrabajo(time));
+        }else{
+            dispatch(setIsLoading(false));
+            dispatch(showMessage(['error','Error al enviar la informacion. Por favor vuelva a intentarlo']))
+        }
+    }    
+
+}
+
+export const startWork=(time)=>{
+    return async(dispatch)=>{
+            dispatch(inicioDeJornada(time));   
+}        
+}
+

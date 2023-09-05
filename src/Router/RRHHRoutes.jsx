@@ -6,6 +6,7 @@ import { HomeRRHH } from '../Modulos/RRHH/Pages/HomeRRHH';
 import { Solicitudes } from '../Modulos/RRHH/Solicitudes/pages/Solicitudes';
 import { Vacantes } from '../Modulos/RRHH/Vacantes/Pages/Vacantes';
 import { NuevaVacante } from '../Modulos/RRHH/Vacantes/Pages/NuevaVacante';
+import { Asistencias } from '../Modulos/RRHH/Pages/Asistencias';
 
 export const RRHHRoutes = () => {
   return (
@@ -16,6 +17,7 @@ export const RRHHRoutes = () => {
       <Route path="solicitudDeEmpleo" element={<Solicitudes />} />
       <Route path="vacantes" element={<Vacantes/>}/>
       <Route path="nuevaVacante" element={<NuevaVacante/>}/>
+      <Route path="asistencias" element={<Asistencias/>}/>
     </Routes>
   );
 };

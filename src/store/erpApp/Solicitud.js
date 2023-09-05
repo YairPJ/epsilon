@@ -8,6 +8,7 @@ initialState: {
     mesaggeSaved: [],
     solicitudes: [],
     active: [],
+    empleados: [],
 
 },
 reducers: {
@@ -30,7 +31,9 @@ reducers: {
         const update = state.solicitudes.filter(solicitud => solicitud.id !== action.payload);
         state.solicitudes=update;
     },
-    
+    setEmpleados:(state,action)=>{
+        state.empleados=action.payload;
+    },
       
     cleanSolicitud: (state)=>{
         state.isSaving= false;
@@ -46,4 +49,4 @@ reducers: {
 });
 // Action creators are generated for each case reducer function
 export const { addSolicitud, setActiveSolicitud, setSaving, deleteSolicitud, 
-    updateSolicitud,creatingNewSolicitud, cleanSolicitud} = solicitudSlice.actions;
+    updateSolicitud,creatingNewSolicitud, cleanSolicitud, setEmpleados} = solicitudSlice.actions;

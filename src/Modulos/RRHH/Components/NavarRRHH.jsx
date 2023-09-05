@@ -29,6 +29,12 @@ export const NavarRRHH = () => {
                   { title: "Consulta", link: "/home/rrhh/consultaempleados" },
                 ]}
               />
+              <Options
+                title={"Asistencias"}
+                links={[
+                  { title: "Consultar asistencias", link: "/home/rrhh/asistencias" },
+                ]}
+              />
             </div>
           </div>
         </div>

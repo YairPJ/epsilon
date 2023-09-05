@@ -10,6 +10,7 @@ import { loadImageSecurity } from '../../../helpers/loadImageSecurity';
 import { startLoadingDerechosEmpleado, startUpdateUserInformation } from '../../../store/Gestion/Thunks';
 import { useNavigate } from 'react-router';
 import { showMessage } from '../../../store/HomeReducer/Home';
+import { ErrorView } from './errorView';
 
 export const UsuarioInfoView = () => {
   const { userActive, isLoading, userActiveDerechos } = useSelector(state => state.gestion);
@@ -84,7 +85,7 @@ export const UsuarioInfoView = () => {
   if (!userActiveDerechos) {
     return (
       <Box sx={{ display: 'flex', width: '100%', alignItems: 'center' }}>
-        <CircularProgress sx={{ margin: 'auto' }} />
+        <ErrorView/>
       </Box>
     );
   }

@@ -83,15 +83,6 @@ export const Login = () => {
           >
             INGRESAR
           </Button>
-          <br/>
-          <Button
-            style={{marginTop: '15px', borderRadius: '30px', backgroundColor: 'white'}}
-            onClick={onGoogleSubmit}
-            disabled={isAuth}
-          >
-            <img src={logoGoogle} style={{width: '20px'}}/>
-            <a style={{marginLeft: '10px', color: 'black'}}>INGRESAR CON GOOGLE</a>
-          </Button>
           <br />
         </form>
         <br/>

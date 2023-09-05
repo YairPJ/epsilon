@@ -82,7 +82,12 @@ export const SideBar = ({ drawerWidth }) => {
                 ))
               ) : (
                 <Box sx={{ width: '100%' }}>
+                  {(filteredSolicitudes.length>0)?(
                   <LinearProgress />
+                  ):(
+                    <Typography>No se encontraron solicitudes</Typography>
+                  )
+                  }
                 </Box>
               )}
             </List>

@@ -1,23 +1,22 @@
-import { getFirestore, collection, where, getDocs } from "firebase/firestore";
+import { getFirestore, collection, where, getDocs, query } from "firebase/firestore";
 
 export const getAuthFirebase = async (email) => {
   try {
     const db = getFirestore();
-    const usersCollection = collection(db, "users"); // Cambia "users" al nombre de tu colección
+    const usersCollection = collection(db, "DataUsers");
 
-    const query = where("email", "==", email); // Suponiendo que tengas un campo "email" en tus documentos
+    const q = query(usersCollection, where("Email", "==", email));
 
-    const querySnapshot = await getDocs(query(usersCollection));
+    const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
-      // El usuario con el correo electrónico existe en la base de datos
       const userDoc = querySnapshot.docs[0];
-      const uid = userDoc.id; // El UID del usuario
-      console.log("UID:", uid);
+      const uid = userDoc.id;
+      return uid;
     } else {
-      console.log("No se encontró ningún usuario con ese correo electrónico en la base de datos.");
+      return null;
     }
   } catch (error) {
-    console.error("Error:", error);
+      return error;
   }
 };

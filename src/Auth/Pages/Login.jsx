@@ -2,13 +2,15 @@ import React, { useMemo, useState } from 'react';
 import '../styles/login.css';
 import Button from '@mui/material/Button';
 import Slide from '@mui/material/Slide';
-import { Alert,Grid, CircularProgress } from '@mui/material';
+import { Alert,Grid, CircularProgress, InputBase, TextField } from '@mui/material';
 import { Navigate, useNavigate } from 'react-router';
+import PersonIcon from '@mui/icons-material/Person';
 import logoProvi from '../../../public/images/logoprovi.png'
 import logoGoogle from '../../../public/images/googleLogo.png'
 import { useForm } from '../../Hooks';
 import { useDispatch, useSelector } from 'react-redux';
 import { checkingAuth, startGoogleSingIn, startSignInEmail } from '../../store/auth/thunks';
+import { Box } from '@mui/system';
 
 export const Login = () => {
 
@@ -58,20 +60,27 @@ export const Login = () => {
           </div>
           <h2>INICIAR SESION</h2>
           <hr />
-          <input
-            placeholder="Correo Electronico"
+          <Box sx={{width: '300px' }}>
+          <TextField
+            label="Correo Electronico"
             type="text"
             value={email}
             name="email"
+            fullWidth
             onChange={onInputChange}
+            sx={{ display: 'block', width: '100%', fontSize: '20px', backgroundColor: 'white'}}
           />
-          <input
-            placeholder="Contraseña"
+          <br />
+          <TextField
+            label="Contraseña"
             type="password"
             value={password}
             name="password"
+            fullWidth
             onChange={onInputChange}
+            sx={{ display: 'block', width: '100%', fontSize: '20px', backgroundColor: 'white'}}
           />
+        </Box>
           <br />
           <Button
           type="submit"
